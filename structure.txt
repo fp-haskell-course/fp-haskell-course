@@ -176,5 +176,6 @@ List
 
 * Do some exercises?
 
+TODO: map
 
-* Monoids
+TODO: filter
