@@ -67,7 +67,46 @@ applicatives in due course.
 all the common Haskell constructs/kenwords/conecpts etc).
 ** language pragmas, module/exports, imports, functions, main, type signatures
 
-* Look at a simple test program using Hspec (hello-hspec.hs).
+* Explain types
+
+  Load ghci and go through operations on disparate types, e.g .1 + True
+  Type inference
+  ad-hoc (c++) vs parametric 
+
+--------------------------------------------------------------------------------
+ADTs
+----
+ADTs
+  product types (basic record syntax)
+  sum types, either then maybe
+  algebra of these
+  data constructors
+  pattern matching
+
+* ADT
+
+data Expr
+	= IntV Integer
+	| Plus Expr Expr
+	| Times Expr Expr
+
+TODO: Exercise: Calculator interpreter
+
+
+--------------------------------------------------------------------------------
+List
+----
+
+* Look at the definition of Data.List.
+* Note that List can hold any type, but can only hold a single type (workarounds later).
+* look at the type of the map function
+* doing things like:
+
+     map show [1,2,3,4]
+     map (+1) [1,2,3,4]
+
+* Look at a simple test program using Hspec (hello-hspec.hs), mentioning that
+  'do' is to be ignored for now, we will talk about monads later.
 
     {-# LANGUAGE ScopedTypeVariables #-}
 
@@ -136,31 +175,6 @@ all the common Haskell constructs/kenwords/conecpts etc).
   other languages.
 
 * Do some exercises?
-
---------------------------------------------------------------------------------
-List
-----
-
-* Look at the definition of Data.List.
-* Note that List can hold any type, but can only hold a single type (workarounds later).
-* look at the type of the map function
-* doing things like:
-
-     map show [1,2,3,4]
-     map (+1) [1,2,3,4]
-
-
-
-
-
-* ADT
-
-data Expr
-	= Var String"
-	| IntV Integer
-	| FloatV Double
-	| Plus Expr Expr
-	| Times Expr Expr
 
 
 * Monoids
