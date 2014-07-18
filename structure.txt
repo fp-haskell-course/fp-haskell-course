@@ -1,0 +1,166 @@
+
+
+* Why Haskell
+
+
+Haskell is a language with the following features:
+
+* Haskell is a Functional Programming language.
+* Haskell has a strict static type system.
+* Haskell has a type system that enforces a separation of pure and impure functions and won't allow you to interchange pure and impure operation in an un-principled way.
+* Haskell makes all variables immutable by default (but provides other avenues for providing mutable data).
+* Allows writing of generic functions that can operate on many different data types and structures.
+* Haskell allows equational reasoning.
+
+* These features makes Haskell one of the best languages currently available for learning data generic, typed functional programming.
+Learning FP in languages without one or more of Haskell's advanced features is sub-optimal.
+
+
+--------------------------------------------------------------------------------
+Introduction
+------------
+
+* This course is about typed, data generic functional programming. It is not
+about "programming in Haskell" because we all know "you can write FORTRAN in
+any language".
+
+* Typed : Using types to restrict the number of ways your program can go wrong.
+* Data Generic : Use the power of types to write code that works over differnent
+types and structures but which the compiler checks for sanity.
+* Functional programing: programming with pure functions (eg sin/exp/log are
+functions, but write_data_to_disk is not pure) rather than with variables/objects
+with mutable state.
+
+* Don't fear the jargon. You'll learn about lambdas, functors, moands and
+applicatives in due course.
+
+* Setup (ghc, platform, cabal, hlint, hoogle etc)
+* Direct them to hackage.haskell.org and hoogle.
+
+* Do hello world (use runghc, load into ghci, compile to an executable, look at the exe size, look at the libraries it links):
+
+	main :: IO ()
+	main = putStrLn "Hello World!"
+
+* Encourage use of "-Wall -fwarn-tabs" from the start. Personally I used a bash
+  alias:
+
+       alias hsrun='runghc -Wall -fwarn-tabs '
+
+  and then us hsrun instead of runghc.
+
+* Mess with ghci and show :type, :info and :reload commands (with shortcuts).
+
+  My $(HOME)/,ghci looks like:
+
+      :set -Wall -fwarn-tabs -fno-warn-type-defaults
+      :set -XOverloadedStrings -XNoMonomorphismRestriction
+      :set prompt "ghci> "
+
+  These settings won't make much sense yet, but they are documented in the GHC
+  user at https://www.haskell.org/ghc/docs/latest/html/users_guide/ .
+  -Wxxx is to enable a warning.
+  -fxxx turns on a feature
+  -X turns on a GHC extension not part of standard Haskell.
+
+* Structure of Haskell source file (nned to come up with one file containing
+all the common Haskell constructs/kenwords/conecpts etc).
+** language pragmas, module/exports, imports, functions, main, type signatures
+
+* Look at a simple test program using Hspec (hello-hspec.hs).
+
+    {-# LANGUAGE ScopedTypeVariables #-}
+
+    import Test.Hspec
+    import Test.Hspec.QuickCheck
+
+    -- Hspec documentation : http://hspec.github.io/
+
+    main :: IO ()
+    main = hspec $
+        describe "Data.List" $ do
+            it "Can append to lists." $
+                [1, 2] ++ [3, 4] `shouldBe` ([1, 2, 3, 4] :: [Int])
+            prop "QuickCheck list reverse." $ \ (list :: [Int]) ->
+                let tisl = reverse list
+                in reverse tisl == list
+            it "Error for Head of an empty list." $
+                head [] `shouldThrow` errorCall "Prelude.head: empty list"
+
+* Now add the following function to the above file and replace one of the calls
+  to reverse with brokenReverse, but don't run it yet.
+
+    brokenReverse :: [a] -> [a]
+    brokenReverse xs
+        | any (== 13) xs = xs
+        | otherwise = reverse xs
+
+  What does this function do? Try looking at the type of the any function in
+  ghci or look it up on hoogle.
+  Explain what brokenReverse does without running it. Then try to compile it
+  and see that the compiler says. Explain that this is how the Haskell compiler
+  makes sense of the stuff we write and call us out on our bullshit/
+  fuzzy-thinking.
+  Fix the function and then see if QuickCheck can find the error in the
+  brokenReverse function.
+
+* A simple copy file program:
+
+    import System.Environment
+
+    import qualified Data.ByteString.Lazy as LBS
+
+    main :: IO ()
+    main = do
+        args <- getArgs
+        case args of
+            [infile, outfile] -> copyFile infile outfile
+            _ -> putStrLn "Usage message here"
+
+    copyFile :: FilePath -> FilePath -> IO ()
+    copyFile infile outfile = do
+        text <- LBS.readFile infile
+        LBS.writeFile outfile text
+
+  run it using:
+
+      runhaskell -Wall really-huge-file /dev/null
+
+  and run top in another window and show that memory usage is less that the size
+  of the file (ie 8Gig ISO file or something). Try compiling a binary and
+  running that binary under strace. Look at the interleaved read and write
+  system calls.
+
+  Explain lazy evaluation and call by need. We'll talk much more about this
+  later. Think about how you would have to write that copyFile function in
+  other languages.
+
+* Do some exercises?
+
+--------------------------------------------------------------------------------
+List
+----
+
+* Look at the definition of Data.List.
+* Note that List can hold any type, but can only hold a single type (workarounds later).
+* look at the type of the map function
+* doing things like:
+
+     map show [1,2,3,4]
+     map (+1) [1,2,3,4]
+
+
+
+
+
+* ADT
+
+data Expr
+	= Var String"
+	| IntV Integer
+	| FloatV Double
+	| Plus Expr Expr
+	| Times Expr Expr
+
+
+* Monoids
