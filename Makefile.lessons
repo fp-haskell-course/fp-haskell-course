@@ -1,0 +1,12 @@
+MARKDOWNS=$(wildcard *.md)
+PDFS=$(MARKDOWNS:md=pdf)
+
+all: $(PDFS) slides.htm
+clean:
+	rm -f $(PDFS) slides.htm
+
+%.htm: %.md
+	pandoc -t slidy -s $< -o $@
+
+%.pdf: %.md
+	pandoc -V geometry:margin=1in -V papersize:"a4paper" $< -o $@
