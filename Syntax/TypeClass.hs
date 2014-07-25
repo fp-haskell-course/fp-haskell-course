@@ -1,0 +1,1 @@
+module Suntax.Typeclass where
