@@ -2,12 +2,18 @@
 import Debug.Trace
 
 facs :: [Integer]
-facs = scanl1 update [ 1 .. ]
+facs =
+    1 : update 1 1
+  where
+    update n p =
+        let next = n + 1
+            prod = next * p
+        in traceStatus next p (prod : update next prod)
 
-update :: Integer -> Integer -> Integer
-update x y =
-    let prod = x * y
-    in trace ("\t" ++ show x ++ " * " ++ show y ++ " ->") prod
+
+traceStatus :: Integer -> Integer -> a -> a
+traceStatus x y = trace ("\t" ++ show x ++ " * " ++ show y ++ " ->")
+
 
 main :: IO ()
 main = do
