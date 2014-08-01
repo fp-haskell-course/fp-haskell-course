@@ -1,4 +1,4 @@
--- This is a commemnt, starting with '--' and runninh to the end of the line.
+-- This is a commemnt, starting with '--' and running to the end of the line.
 
 {-
     This is also comment, but multi-line and terminated by enclosing
@@ -22,7 +22,10 @@ module HaskellSyntax
     , mkStructPointFree
     ) where
 
--- Import S
+import Syntax.ADT
+import Syntax.Data
+import Syntax.Newtype
+import Syntax.Typeclass
 import Wibble.Five
 
 
